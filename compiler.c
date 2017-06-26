@@ -8,8 +8,9 @@ void lexicalAnalyser(int fd);
 void tokenCreator(char c);
 int matchregex(const char *string, char *pattern);
 
-int tokenArraySize=50,tokenindex=0;
+int tokenArraySize=50,tokenindex=0,leximsListSize=50,leximsListindex=0;
 char* tokenList;
+char* leximsList;
 const char *predefinedTokens[] = {"Start","{","}","(",")",";","=","<","++","+","int","float"};
 
 int main(int argc, char *argv[])
@@ -39,6 +40,7 @@ int main(int argc, char *argv[])
     
     
     free(tokenList);
+    free(leximsList);
     return 0;
     
 }
@@ -47,21 +49,34 @@ void lexicalAnalyser(int fd)
     
      int readb=0,lineno=0;
      tokenList=malloc(tokenArraySize * sizeof(char));//initialize the tokenList
+     leximsList=malloc(leximsListSize * sizeof(char));//initialize the leximsList
      
      do{
             char c;
             readb=read(fd,&c,1);
             
-            tokenCreator(c);
+            
+            //tokenCreator(c);
+            
             if(c=='\n')
             {
                 lineno++;
+            }else if(c!=' '){
+               leximsList[leximsListindex]=c;
+               leximsListindex++;
+                
             }
             printf("%c",c);
             
      }while(readb!=0);
+    int i;
+     for(i=0;i<leximsListSize;i++)
+     {
+         printf("%c",leximsList[i]);
+         
+     }
      
-     printf("Total Line Numbers %d\n",lineno);
+     printf("\nTotal Line Numbers %d\n",lineno);
     
     
     
@@ -71,7 +86,7 @@ void tokenCreator(char c)
 {
     
  
-    printf("Regex st %d",matchregex("Startg", "[Start]+"));
+   // printf("Regex st %d",matchregex(predefinedTokens, "[Start]+"));
     
     
     
