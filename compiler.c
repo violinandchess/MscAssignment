@@ -3,9 +3,9 @@
 #include <unistd.h>
 #include <fcntl.h> 
 #include <regex.h>
-
+#include <string.h>
 void lexicalAnalyser(int fd);
-void tokenCreator(char c);
+void tokenCreator();
 int matchregex(const char *string, char *pattern);
 
 int tokenArraySize=50,tokenindex=0,leximsListSize=50,leximsListindex=0;
@@ -56,7 +56,7 @@ void lexicalAnalyser(int fd)
             readb=read(fd,&c,1);
             
             
-            //tokenCreator(c);
+           
             
             if(c=='\n')
             {
@@ -69,25 +69,33 @@ void lexicalAnalyser(int fd)
             printf("%c",c);
             
      }while(readb!=0);
-    int i;
-     for(i=0;i<leximsListSize;i++)
-     {
-         printf("%c",leximsList[i]);
+   
+    
+         printf("%s",leximsList);
          
-     }
+    
      
      printf("\nTotal Line Numbers %d\n",lineno);
-    
-    
+    tokenCreator();
     
     
 }
-void tokenCreator(char c)
+void tokenCreator()
 {
-    
- 
-   // printf("Regex st %d",matchregex(predefinedTokens, "[Start]+"));
-    
+
+   if(matchregex(leximsList, "[Start]+")==1)
+       
+   {
+       strcpy(&tokenList[0],predefinedTokens[0]);
+      
+   }
+   int i;
+   for(i=0;i<tokenArraySize;i++)    
+   {
+       
+       printf("%c",tokenList[i]);
+       
+   }
     
     
 }
