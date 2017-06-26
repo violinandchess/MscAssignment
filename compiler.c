@@ -2,8 +2,11 @@
 #include<stdlib.h>
 #include <unistd.h>
 #include <fcntl.h> 
+#include <regex.h>
+
 void lexicalAnalyser(int fd);
 void tokenCreator(char c);
+int matchregex(const char *string, char *pattern);
 
 int tokenArraySize=50,tokenindex=0;
 char* tokenList;
@@ -68,8 +71,23 @@ void tokenCreator(char c)
 {
     
  
+    printf("Regex st %d",matchregex("Startg", "[Start]+"));
     
     
     
-    
+}
+int matchregex(const char *string, char *pattern)
+{
+    int    status;
+    regex_t    re;
+
+    if (regcomp(&re, pattern, REG_EXTENDED|REG_NOSUB) != 0) {
+        return(0);      /* Report error. */
+    }
+    status = regexec(&re, string, (size_t) 0, NULL, 0);
+    regfree(&re);
+    if (status != 0) {
+        return(0);      /* Report error. */
+    }
+    return(1);
 }
